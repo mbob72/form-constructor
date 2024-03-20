@@ -1,35 +1,54 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Select from "react-select"
+import { useForm, Controller, SubmitHandler } from "react-hook-form"
+import { Input } from '@mui/material';
 
-function App() {
-  const [count, setCount] = useState(0)
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+interface IFormInput {
+  firstName: string
+  lastName: string
+  iceCreamType: { label: string; value: string }
 }
 
+
+
+const App = () => {
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      iceCreamType: {},
+    },
+  })
+
+
+  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+    console.log(data)
+  }
+
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Controller
+        name="firstName"
+        control={control}
+        render={({ field }) => <Input {...field} />}
+      />
+      <Controller
+        name="iceCreamType"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={[
+              { value: "chocolate", label: "Chocolate" },
+              { value: "strawberry", label: "Strawberry" },
+              { value: "vanilla", label: "Vanilla" },
+            ]}
+          />
+        )}
+      />
+      <input type="submit" />
+    </form>
+  )
+}
 export default App
