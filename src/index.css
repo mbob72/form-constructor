@@ -79,9 +79,7 @@ button:focus-visible {
   justify-content: center;
 }
 .delete-room {
-  align-self: start;
-  justify-self: center;
-  margin-top: 2em;
+
 }
 .add-room {
   margin-left: 0.8em;

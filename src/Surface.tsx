@@ -2,7 +2,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Button, MenuItem, TextField } from "@mui/material";
 
 interface IFormInput {
-  roomName: string;
+  surfaceName: string;
   repeater: string;
   repeat: {
     daily: number;
@@ -14,27 +14,25 @@ interface IFormInput {
 }
 
 const repeaterType = [
-  { value: "daily", label: "daily" },
-  { value: "x_daily", label: "x times a day" },
-  { value: "weekly", label: "weekly" },
-  { value: "x_weekly", label: "x times a week" },
   { value: "monthly", label: "monthly" },
   { value: "x_monthly", label: "x times a month" },
   { value: "quarterly", label: "quarterly" },
   { value: "x_quarterly", label: "x times a quarter" },
-  { value: "yearly", label: "yearly" },
-  { value: "x_yearly", label: "x times a year" },
+  { value: "semi-annually", label: "semi-annually" },
+  { value: "x_semi-annually", label: "x times semi-annually" },
+  { value: "annually", label: "annually" },
+  { value: "x_annually", label: "x times annually" },
+  { value: "2years", label: "every 2 years" },
+  { value: "x_2years", label: "x times every 2 years" },
 ] as const;
 
-const materials = [
-  { value: "Teppich", label: "Teppich" },
-  { value: "Fliesen", label: "Fliesen" },
-  { value: "Laminatt", label: "Laminatt" },
-  { value: "Holzböden", label: "Holzböden" },
-  { value: "Industrieböden", label: "Industrieböden" },
+const surfaceTypes = [
+  { value: "Tail", label: "Tail" },
+  { value: "Windows", label: "Windows" },
+  { value: "Tables", label: "Tables" },
 ];
 
-const Room = () => {
+const Surface = () => {
   const {
     handleSubmit,
     watch,
@@ -43,7 +41,7 @@ const Room = () => {
     trigger,
   } = useForm({
     defaultValues: {
-      roomName: "",
+      surfaceName: "",
       repeater: repeaterType[0].value,
       repeat: {
         daily: 0,
@@ -52,17 +50,17 @@ const Room = () => {
         quarterly: 0,
         yearly: 0,
       },
-      material: materials[0].value,
+      material: surfaceTypes[0].value,
       square: 0,
     },
     mode: "onBlur",
   });
   const repeater = watch("repeater").split("_")[1];
 
-  const registerRoom = register("roomName", {
+  const registerSurfaceName = register("surfaceName", {
     minLength: {
       value: 2,
-      message: "Room name should have at least 2 characters",
+      message: "Surface name should have at least 2 characters",
     },
     required: true,
   });
@@ -83,8 +81,8 @@ const Room = () => {
     required: "Please enter repeater",
   });
 
-  const materialInputProps = register("material", {
-    required: "Please enter maretiral",
+  const surfaceTypesInputProps = register("material", {
+    required: "Please enter type of surface",
   });
 
   console.log("errors::", errors);
@@ -92,20 +90,20 @@ const Room = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="form">
       <TextField
-        {...registerRoom}
-        label="Room name"
+        {...registerSurfaceName}
+        label="Surface name"
         onChange={(e) => {
-          registerRoom.onChange(e);
-          if (errors.roomName) {
-            trigger("roomName").then(() => {});
+          registerSurfaceName.onChange(e);
+          if (errors.surfaceName) {
+            trigger("surfaceName").then(() => {});
           }
         }}
-        helperText={errors.roomName?.message}
-        error={!!errors.roomName} // Display error state if there's an error for roomName
+        helperText={errors.surfaceName?.message}
+        error={!!errors.surfaceName} // Display error state if there's an error for surfaceName
         placeholder="Type in here…"
       />
       <TextField
-        label={"Room square"}
+        label={"Surface square"}
         {...squareRegister}
         className="tail"
         onChange={(e) => {
@@ -152,13 +150,13 @@ const Room = () => {
 
       <TextField
         select
-        label="Material"
-        defaultValue={materials[0].value}
+        label="Surface type"
+        defaultValue={surfaceTypes[0].value}
         className="width200"
         fullWidth
-        inputProps={materialInputProps}
+        inputProps={surfaceTypesInputProps}
       >
-        {materials.map(({ value, label }) => (
+        {surfaceTypes.map(({ value, label }) => (
           <MenuItem key={value} value={value}>
             {label}
           </MenuItem>
@@ -170,4 +168,4 @@ const Room = () => {
     </form>
   );
 };
-export default Room;
+export default Surface;
