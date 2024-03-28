@@ -1,5 +1,11 @@
-import { useForm, SubmitHandler } from "react-hook-form";
-import { Button, MenuItem, TextField } from "@mui/material";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import {
+  Button,
+  Checkbox,
+  FormControlLabel,
+  MenuItem,
+  TextField,
+} from "@mui/material";
 
 interface IFormInput {
   surfaceName: string;
@@ -39,6 +45,7 @@ const Surface = () => {
     formState: { errors },
     register,
     trigger,
+    control,
   } = useForm({
     defaultValues: {
       surfaceName: "",
@@ -50,8 +57,10 @@ const Surface = () => {
         quarterly: 0,
         yearly: 0,
       },
-      material: surfaceTypes[0].value,
+      surfaceType: surfaceTypes[0].value,
       square: 0,
+      inside: true,
+      outside: false,
     },
     mode: "onBlur",
   });
@@ -81,11 +90,12 @@ const Surface = () => {
     required: "Please enter repeater",
   });
 
-  const surfaceTypesInputProps = register("material", {
+  const surfaceTypesInputProps = register("surfaceType", {
     required: "Please enter type of surface",
   });
-
-  console.log("errors::", errors);
+  const insideR = register("inside");
+  const outsideR = register("outside");
+  console.log("checks::", insideR, outsideR);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="form">
@@ -162,6 +172,32 @@ const Surface = () => {
           </MenuItem>
         ))}
       </TextField>
+      <div>
+        <Controller
+          control={control}
+          name={`outside`}
+          defaultValue={false}
+          render={({ field: { onChange, value } }) => (
+            <FormControlLabel
+              label="OUTSIDE"
+              labelPlacement="top"
+              control={<Checkbox checked={value} onChange={onChange} />}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name={`inside`}
+          defaultValue={false}
+          render={({ field: { onChange, value } }) => (
+            <FormControlLabel
+              label="INSIDE"
+              labelPlacement="top"
+              control={<Checkbox checked={value} onChange={onChange} />}
+            />
+          )}
+        />
+      </div>
       <Button variant="outlined" type="submit" className="tail3">
         Subscribe
       </Button>
