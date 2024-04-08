@@ -1,6 +1,8 @@
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { Button, MenuItem, TextField } from "@mui/material";
 import { RoomCreatable } from "./RoomCreatable";
+import { CreatableInput, CreatableValueType } from "./CreatableInput";
+import React from "react";
 
 interface IFormInput {
   roomName: string;
@@ -34,6 +36,8 @@ const materials = [
   { value: "Holzböden", label: "Holzböden" },
   { value: "Industrieböden", label: "Industrieböden" },
 ];
+
+const min = 7;
 
 const Room = () => {
   const methods = useForm({
@@ -82,12 +86,29 @@ const Room = () => {
     required: "Please enter maretiral",
   });
 
-  console.log("errors::", errors);
+  const [options, setOptions] = React.useState<CreatableValueType[]>([]);
+
 
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)} className="form">
-        <RoomCreatable />
+        <CreatableInput
+          rules={{
+            required: "It couldn't be empty field",
+            minLength: {
+              value: min,
+              message: `Room name should have at least ${min} characters`,
+            },
+            pattern: {
+              value: /^[a-zA-Z.+'-_]+(?:\s[a-zA-Z.+'-_]+)*\s?$/i,
+              message:
+                "You can use only alphabetical symbols, and .+'-_ symbols, and blank space as words devider",
+            },
+          }}
+          name="roomName"
+          options={options}
+          setOptions={setOptions}
+        />
         <TextField
           label={"Room square"}
           {...squareRegister}
