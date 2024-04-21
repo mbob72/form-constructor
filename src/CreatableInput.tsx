@@ -1,7 +1,10 @@
 import * as React from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
-import { useForm, Controller, UseControllerProps } from "react-hook-form";
+import {
+  Controller,
+  UseControllerProps, useForm,
+} from "react-hook-form";
 import { Dispatch, SetStateAction, SyntheticEvent } from "react";
 
 export interface CreatableValueType {
@@ -29,7 +32,7 @@ export const CreatableInput: React.FC<CreatableInputProps> = ({
   initValue,
   rules,
   options,
-  setOptions
+  setOptions,
 }) => {
   const [value, setValue] = React.useState<CreatableValueType | "">(
     initValue ? { value: initValue, label: initValue } : "",
@@ -185,4 +188,4 @@ export const CreatableInput: React.FC<CreatableInputProps> = ({
       }}
     />
   );
-}
+};
